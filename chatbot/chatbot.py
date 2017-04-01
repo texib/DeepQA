@@ -350,6 +350,10 @@ class Chatbot:
             list <int>: the word ids corresponding to the answer
         """
         # Create the input batch
+        
+        question = question.replace("!","exmark")
+        question = question.replace("?","qmark")
+        
         batch = self.textData.sentence2enco(question)
         if not batch:
             return None

@@ -523,7 +523,13 @@ class TextData:
             if wordId == self.eosToken:  # End of generated sentence
                 break
             elif wordId != self.padToken and wordId != self.goToken:
-                sentence.append(self.id2word[wordId])
+                
+                if self.id2word[wordId] == 'exmark':
+                    sentence.append('!')
+                elif self.id2word[wordId] == 'qmark':
+                    sentence.append('?')
+                else:
+                    sentence.append(self.id2word[wordId])
 
         if reverse:  # Reverse means input so no <eos> (otherwise pb with previous early stop)
             sentence.reverse()
@@ -569,7 +575,9 @@ class TextData:
             return None
 
         # First step: Divide the sentence in token
-        tokens = nltk.word_tokenize(sentence)
+        import jieba
+
+        tokens = [w for w in jieba.cut(sentence)] #nltk.word_tokenize(sentence)
         if len(tokens) > self.args.maxLength:
             return None
 
